@@ -1,10 +1,9 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import { Grid } from "semantic-ui-react";
 import { IActivity } from "../../../app/models/activity";
 import { ActivityList } from "./ActivityList";
 import { ActivityDetails } from "../Details/ActivityDetails";
 import { ActivityForm } from "../form/ActivityForm";
-
 
 interface IProps {
   activities: IActivity[];
@@ -12,10 +11,12 @@ interface IProps {
   selectedActivity: IActivity | null;
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
-  setSelectedActivity : (activity : IActivity | null) => void;
-  createActivity : (activity : IActivity) => void;
-  editActivity : (activity : IActivity) => void; 
-  deleteActivity : (id : string) => void;
+  setSelectedActivity: (activity: IActivity | null) => void;
+  createActivity: (activity: IActivity) => void;
+  editActivity: (activity: IActivity) => void;
+  deleteActivity: (event:SyntheticEvent<HTMLButtonElement> ,id: string) => void;
+  submitting: boolean;
+  target : string;
 }
 
 export const ActivityDashboard: React.FC<IProps> = ({
@@ -27,8 +28,9 @@ export const ActivityDashboard: React.FC<IProps> = ({
   setSelectedActivity,
   createActivity,
   editActivity,
-  deleteActivity
-
+  deleteActivity,
+  submitting,
+  target
 }) => {
   return (
     <Grid>
@@ -36,13 +38,29 @@ export const ActivityDashboard: React.FC<IProps> = ({
         <ActivityList
           activities={activities}
           selectActivity={selectActivity}
-          deleteActivity = {deleteActivity}
+          deleteActivity={deleteActivity}
+          submitting={submitting}
+          target = {target}
         ></ActivityList>
       </Grid.Column>
       <Grid.Column width={6}>
-        {selectedActivity && !editMode && <ActivityDetails activity={selectedActivity} setEditMode = {setEditMode} setSelectedActivity ={setSelectedActivity}></ActivityDetails> }
-        {editMode && <ActivityForm key ={(selectedActivity && selectedActivity.id) || 0} setEditMode = {setEditMode} activity={selectedActivity} createActivity = {createActivity} editActivity = {editActivity}></ActivityForm>}
-        
+        {selectedActivity && !editMode && (
+          <ActivityDetails
+            activity={selectedActivity}
+            setEditMode={setEditMode}
+            setSelectedActivity={setSelectedActivity}
+          ></ActivityDetails>
+        )}
+        {editMode && (
+          <ActivityForm
+            key={(selectedActivity && selectedActivity.id) || 0}
+            setEditMode={setEditMode}
+            activity={selectedActivity}
+            createActivity={createActivity}
+            editActivity={editActivity}
+            submitting = {submitting}
+          ></ActivityForm>
+        )}
       </Grid.Column>
     </Grid>
   );
