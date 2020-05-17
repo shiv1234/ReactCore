@@ -28,7 +28,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> Create(Create.command command)
+        public async Task<ActionResult<Unit>> Create(Create.Command command)
         {
             return await _mediator.Send(command);
         }
