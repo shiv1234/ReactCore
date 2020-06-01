@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Errors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Middleware
 {
