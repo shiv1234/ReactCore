@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\client-app\\src",
-    "\\client-app\\src\\app",
-    "\\client-app\\src\\app\\layout"
+    "\\ClientApp"
   ],
   "PreviewInSolutionExplorer": false
 }
