@@ -22,12 +22,10 @@ namespace Infrastructure.Security
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId,user.UserName)
+                new Claim(JwtRegisteredClaimNames.NameId, user.UserName)
             };
 
-            //Generate Sigining credetials
-
-            
+            // generate signing credentials
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -38,11 +36,10 @@ namespace Infrastructure.Security
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-             
-             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-             return tokenHandler.WriteToken(token);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            return tokenHandler.WriteToken(token);
         }
     }
 }

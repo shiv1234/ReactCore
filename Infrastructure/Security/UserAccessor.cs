@@ -12,10 +12,10 @@ namespace Infrastructure.Security
         {
             _httpContextAccessor = httpContextAccessor;
         }
-
         public string GetCurrentUserName()
         {
-            var username = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value;
+           var username = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
             return username;
         }
     }
