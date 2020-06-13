@@ -39,9 +39,10 @@ export interface IAttendee{
     userName : string,
     displayName : string,
     image : string,
-    isHost : boolean
+    isHost : boolean,
+    following?: boolean
+    
 };
-
 export interface IComment {
     id: string;
     createdAt: Date;
