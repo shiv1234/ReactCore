@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { IActivity } from "../models/activity";
+import { IActivity, IActivityEnvelope } from "../models/activity";
 import { history } from "../..";
 import { toast } from "react-toastify";
 import { IUser, IUserFormValues } from "../models/user";
@@ -55,13 +55,18 @@ const requests = {
   del: (url: string) => axios.delete(url).then(sleep(1000)).then(responseBody),
   postForm: (url: string, file: Blob) => {
     let formData = new FormData();
-    formData.append('file',file);
-    return axios.post(url,formData,{headers:{'Content-type':'multipart-form-data'}}).then(responseBody)
+    formData.append("file", file);
+    return axios
+      .post(url, formData, {
+        headers: { "Content-type": "multipart-form-data" },
+      })
+      .then(responseBody);
   },
 };
 
 const Activities = {
-  list: (): Promise<IActivity[]> => requests.get("/activities"),
+  list: (params: URLSearchParams): Promise<IActivityEnvelope> =>
+     axios.get('/activities',{params : params}).then(sleep(1000)).then(responseBody),
   details: (id: string) => requests.get(`/activities/${id}`),
   create: (activity: IActivity) => requests.post("/activities", activity),
   update: (activity: IActivity) =>
@@ -80,14 +85,21 @@ const User = {
 };
 
 const Profiles = {
-  get: (username: string): Promise<IProfile> => requests.get(`/profiles/${username}`),
-  uploadPhoto : (photo : Blob) : Promise<IPhoto> => requests.postForm(`/photos/`,photo),
-  setMainPhoto :(id : string) => requests.post(`/photos/${id}/setMain`,{}),
-  deletePhoto :(id : string) => requests.del(`/photos/${id}`),
-  updateProfile : (profile : Partial<IProfile>) => requests.put(`/profiles`,profile),
-  follow: (username: string) => requests.post(`/profiles/${username}/follow`, {}),
+  get: (username: string): Promise<IProfile> =>
+    requests.get(`/profiles/${username}`),
+  uploadPhoto: (photo: Blob): Promise<IPhoto> =>
+    requests.postForm(`/photos/`, photo),
+  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+  updateProfile: (profile: Partial<IProfile>) =>
+    requests.put(`/profiles`, profile),
+  follow: (username: string) =>
+    requests.post(`/profiles/${username}/follow`, {}),
   unfollow: (username: string) => requests.del(`/profiles/${username}/follow`),
-  listFollowings: (username: string, predicate: string) => requests.get(`/profiles/${username}/follow?predicate=${predicate}`)
+  listFollowings: (username: string, predicate: string) =>
+    requests.get(`/profiles/${username}/follow?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) =>
+    requests.get(`/profiles/${username}/activities?predicate=${predicate}`)
 };
 
 export default {
